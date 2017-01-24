@@ -1,0 +1,41 @@
+%h1
+  %small Details for
+  = @resource_group.group_name
+
+- if @tasks.count > 0
+  %h3 Active Tasks
+  .tasks
+    - @tasks.each do |task|
+      .well
+        = render 'tasks/task', task: task
+  
+.btn-group
+  = link_to 'Show report', resource_group_report_path(@resource_group), class: "btn btn-success"
+  = link_to 'Sync this group', sync_group_path(@resource_group), method: :patch, class: "btn btn-primary #{@resource_group.currently_syncing? ? 'disabled' : ''}"
+  = link_to 'Calculate Metrics', group_metrics_path(@resource_group), method: :patch, class: 'btn btn-info'
+  = link_to 'Compare with Google', google_metrics_path(@resource_group, 'sync' => 1), method: :patch, class: 'btn btn-default'
+.btn-group
+  %button.btn.btn-default.dropdown-toggle{type: 'button', 'data-toggle' => 'dropdown'}
+    Edit group
+    %span.caret
+  %ul.dropdown-menu{role: 'menu'}
+    %li= link_to 'Delete group', @resource_group, method: :delete, data: { confirm: 'Are you sure?' }, class: "#{@resource_group.currently_syncing? ? 'disabled' : ''}"
+    %li= link_to 'Activate all', activate_group_path(@resource_group), method: :patch, class: "#{@resource_group.currently_syncing? ? 'disabled' : ''}"
+    %li= link_to 'Deactivate all', deactivate_group_path(@resource_group), method: :patch, class: "#{@resource_group.currently_syncing? ? 'disabled' : ''}"
+    %li= link_to 'Clear all', clear_group_path(@resource_group), method: :patch, class: "#{@resource_group.currently_syncing? ? 'disabled' : ''}"
+
+
+= form_tag(resource_group_add_resource_path(@resource_group)) do
+  .form-group
+    %label{for: 'res_select'} Add resource
+    = hidden_field_tag(:resource, '', id: 'res_select', class: 'select2 ajax', style: 'width: 100%;', data: { source: search_resource_names_path, placeholder: 'Search for a name' })
+  %button.btn.btn-default{type: 'submit'} Add
+
+%p
+  - @resource_group.metric_overview_classes.each do |group_metric|
+    = render "metrics/#{group_metric.class.name.demodulize.underscore}_group_overview", klass: group_metric
+
+= render layout: "partials/reslist", locals: { resources: @resource_group.resources } do |res|
+  = link_to(remove_resource_from_group_path(@resource_group, res), method: :delete, class: 'btn btn-sm btn-danger', title: 'Remove from group') do
+    %span.glyphicon.glyphicon-remove
+

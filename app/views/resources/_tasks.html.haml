@@ -1,0 +1,6 @@
+- if tasks.count > 0
+  %h3 Active Tasks
+  .tasks
+    - tasks.each do |task|
+      .well
+        = render 'tasks/task', task: task

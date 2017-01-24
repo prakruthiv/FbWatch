@@ -1,0 +1,9 @@
+== FBWatch - Facebook Watch
+
+Working on creating a social observatory for social scientists by utilizing 
+facebook's graph and accessing publicly available data.
+
+
+=== Stats
+
+- 2013-07-16 14:41:48: Synced Angela Merkel in 20,592,833ms = 343min = 5.7h, db queries took 3,545,246.0ms = 59min (17% of time), containing 79,168 feed items & comments (802 status updates & 78,366 comments), and 553,298 likes, making 5,576 calls to Facebooks Graph API (upper bound for avg call 3s), 6 pages of feed (with max 100 entries), 441 calls retrieving comments from feed items, and 5,129 calls getting likes (comments can have likes as well!), resulting in a 280MiB logfile

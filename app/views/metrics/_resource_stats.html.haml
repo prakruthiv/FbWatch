@@ -1,0 +1,7 @@
+Resource Stats
+%ul
+  - collection.each do |metric|
+    %li
+      %p{class: "metric-key-#{metric.vars_for_render[:name]}"}
+        %strong= metric.vars_for_render[:friendly_name]
+        = metric.vars_for_render[:value]

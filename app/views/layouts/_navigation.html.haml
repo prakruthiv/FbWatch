@@ -1,0 +1,16 @@
+.navbar-header
+  %button.navbar-toggle{type: "button", 'data-toggle' => "collapse", 'data-target' => ".navbar-collapse"}
+    %span.icon-bar
+    %span.icon-bar
+    %span.icon-bar
+  = link_to "FBWatch", root_path, :class => 'navbar-brand'
+.navbar-collapse.collapse
+  %ul.nav.navbar-nav
+    %li
+      = link_to "Home", root_path
+    %li
+      = link_to "GraphAPI Test", apitest_path
+    %li
+      = link_to "Resources", resources_path
+    %li
+      = link_to "Tasks", tasks_path

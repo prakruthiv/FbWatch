@@ -1,0 +1,11 @@
+Mentions
+%ul
+  - collection.each do |metric|
+    %li
+      %p{class: "metric-key-#{metric.vars_for_render[:name]}"}
+        %strong Mentioned keywords
+        for 
+        = raw print_res_list(metric.resources)
+        %ul
+          - metric.vars_for_render[:value].each do |k,v|
+            %li= "#{k}: #{v}"

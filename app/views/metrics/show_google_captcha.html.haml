@@ -1,0 +1,10 @@
+%h1 Enter the following Google Captcha
+
+%form{'method' => 'post', 'action' => save_captcha_path}
+  %input{name: "authenticity_token", type: "hidden", value: form_authenticity_token}
+  %img{src: @image_src}
+  %br
+  %input{type: 'text', name: 'code'}
+  %br
+  %input{type: 'submit'}
+  

@@ -1,0 +1,11 @@
+Relationship Score (Top 10)
+%ul.score-charts
+  - klass.metrics[0..9].each do |metric|
+    - next if metric.sort_value == 0
+    %li
+      %p{class: "metric-key-#{metric.vars_for_render[:name]}"}
+        = link_to metric.resource.name, resource_overview_path(metric.resource.username)
+        <--
+        = raw print_res_list(metric.vars_for_render[:involved_resources])
+        %small= "(#{metric.sort_value})"
+        = pie_chart({'mentions' => metric.value['mentions'], 'shared' => metric.value['shared'], 'weighted' => metric.value['weighted']}, height: "#{klass.pie_chart_size(metric.sort_value)}px", library: {legend: 'none'})

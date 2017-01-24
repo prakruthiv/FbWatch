@@ -1,0 +1,69 @@
+// Place all the styles related to the Resources controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+/*
+ */
+
+.feed-table {
+    table-layout:fixed;
+    .col-date {
+        width: 8%;
+    }
+    .col-data  {
+        width: 50%;
+        .res-data {
+            word-wrap: break-word;
+        }
+    }
+    .col-type {
+        width: 8%;
+    }
+    .col-from, .col-to {
+        width: 10%;
+    }
+    .col-comments, .col-likes {
+        width: 7%;
+    }
+}
+
+.nav-pills > li > span {
+    border-radius: 5px;
+}
+.nav > li > span {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.paging a {
+    font-weight: bold;
+}
+.task {
+    > span.label {
+        float: left;
+        margin-right: 20px;
+        height:20px;
+        line-height: 20px;
+        padding-top:0;
+        padding-bottom: 0;
+    }
+    .progress {
+        margin-bottom: 0;
+        float: left;
+        width: 500px;
+    }   
+}
+#fb-timeline .event {
+    .heading, .footer {
+        font-size: 90%;
+    }
+}
+ul.score-charts {
+    list-style: none;
+    li {
+        display: inline-block;
+        width: 400px;
+        p {
+            text-align: center;
+        }
+    }
+}

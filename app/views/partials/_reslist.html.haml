@@ -1,0 +1,37 @@
+%p
+  %i= "Resources: #{resources.count}"
+%table.table
+  %tr
+    %th Name
+    %th Active
+    %th Last Synced
+    %th Sync Stat
+    %th &nbsp;
+  - resources.each do |res|
+    %tr
+      %td= link_to "#{res.name} (#{res.username})", resource_overview_path(res.username)
+      %td
+        = res.active
+        - if res.active
+          = link_to(sync_disable_path(res.username), class: "btn btn-default btn-sm", title: 'Disable') do
+            %span.glyphicon.glyphicon-remove
+        - else
+          = link_to(sync_enable_path(res.username), class: "btn btn-default btn-sm", title: 'Enable') do
+            %span.glyphicon.glyphicon-ok
+      %td
+        - if res.last_synced.is_a?(Time) and res.last_synced > DateTime.now
+          %i currently syncing
+        - elsif res.last_synced.is_a?(Time)
+          = time_ago_in_words(res.last_synced) + " ago"
+      %td
+        - if res.sync_complete?
+          = "complete, #{number_with_delimiter(res.feed.count)} items"
+        - elsif res.dummy?
+          = "-"
+        - else
+          = "partial, #{number_with_delimiter(res.feed.count)} items"
+      %td
+        = link_to "Sync now", sync_path(res.username), class: "btn btn-primary"
+        = yield res
+        = link_to(res, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-danger btn-xs', title: 'Delete resource completely') do
+          %span.glyphicon.glyphicon-trash

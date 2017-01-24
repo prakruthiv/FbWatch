@@ -1,0 +1,38 @@
+%h1 FBWatch Status
+= link_to "Grouped View", root_path
+
+%h2 Add new resource to observe
+= simple_form_for(@resource) do |f|
+  = f.error_notification
+  = f.input :username, label: "Facebook URL"
+  %span.help-block
+    %a#make-input-batch{href: 'javascript:void(0);'} Batch Input
+  = f.input :resource_groups, collection: (ResourceGroup.all.map { |group| [group.group_name, group.id] }), label: 'Add to group'
+  = f.button :submit, 'Add', class: 'btn-default'
+
+%h2 Current Resources
+%p
+  Total:
+  = @total_res
+= link_to "Sync All", sync_all_path, class: "btn btn-default", data: { confirm: "This might take a while. Continue?" }
+
+.paging
+  - if @offset > 0
+    = link_to 'Previous', resources_index_path(@offset-1)
+  \|
+  = link_to 'Next', resources_index_path(@offset+1)
+
+= form_tag(resource_group_mass_assign_path) do
+  = render(layout: "partials/reslist", locals: {resources: @resources}) do |res|
+    %p{style:"float:right;"}= check_box_tag('resources[]', res.id, false, id: "resource-check-#{res.id}")
+
+  .form-group
+    %label{for: 'group_select'} Add to group
+    = select_tag(:group, options_for_select(ResourceGroup.all.map { |group| [group.group_name, group.id] }), id: 'group_select', class: 'form-control')
+  %button.btn.btn-default{type: 'submit'} Add
+
+.paging
+  - if @offset > 0
+    = link_to 'Previous', resources_index_path(@offset-1)
+  \|
+  = link_to 'Next', resources_index_path(@offset+1)

@@ -1,0 +1,158 @@
+%h1
+  %small Details for
+  = @resource.name
+%p
+  = link_to "Show overview", resource_overview_path(@resource.username), class: "btn btn-default"
+  = link_to "Sync now", sync_path(@resource.username), class: "btn btn-primary #{@resource.currently_syncing? ? 'disabled' : ''}"
+  = link_to "Sync test", sync_path(@resource.username, test: 1), class: "btn btn-default #{@resource.currently_syncing? ? 'disabled' : ''}"
+  = link_to "Clean up feed", clean_up_resource_path(@resource.username), class: "btn btn-default #{@resource.currently_syncing? ? 'disabled' : ''}"
+  = link_to "Clear all", sync_clear_path(@resource.username), class: "btn btn-default #{@resource.currently_syncing? ? 'disabled' : ''}"
+
+= render 'tasks', tasks: @resource.tasks
+
+.row
+  .col-md-6
+    %h2
+      %a{'data-toggle' => 'collapse', 'data-target' => "\#res-group-basic"} Basic Data
+    %section#res-group-basic.collapse
+      %p
+        %b ID:
+        = @resource.id
+      %p
+        %b Name:
+        = @resource.name
+      %p
+        %b Username:
+        = @resource.username
+      %p
+        %b Facebook ID:
+        = @resource.facebook_id
+      %p
+        %b Link:
+        =link_to @resource.link, @resource.link
+      %p
+        %b Last synced:
+        = @resource.last_synced.localtime if @resource.last_synced.is_a?(Time)
+        = link_to(clear_last_synced_path(@resource), method: :patch, title: 'Clear this field') do
+          %span.glyphicon.glyphicon-trash
+      %p
+        %b Active:
+        = @resource.active
+
+  .col-md-6
+    %h2
+      %a{'data-toggle' => 'collapse', 'data-target' => "\#res-group-about"} Additional Data
+    %section#res-group-about.collapse
+      - @resource.basicdata.each do |item|
+        %p
+          %b= item['key']
+          = item['value']
+      %p
+        = simple_form_for(@keywords, url: keywords_path(@resource), method: :patch) do |f|
+          = f.error_notification
+          = f.input :key, as: :hidden
+          = f.input :value, as: :string, label: 'Modify keywords (comma seperated)'
+          = f.button :submit, 'Save', class: 'btn-default'
+      %p
+        = simple_form_for(@color, url: node_color_path(@resource), method: :patch) do |f|
+          = f.error_notification
+          = f.input :key, as: :hidden
+          = f.input :value, as: :string, label: 'Network node color (HTML hex format)'
+          = f.button :submit, 'Save', class: 'btn-default'
+
+
+%h2 
+  %a{'data-toggle' => 'collapse', 'data-target' => "\#res-group-metrics"} Metrics
+#res-group-metrics.row.collapse.in
+  .col-md-6
+    %h3 Resource Metrics
+    = link_to "Re-Calc", run_metrics_path(@resource.username), method: :patch, class: "btn btn-default"
+    %ul
+    - @metrics.each do |class_name, group|
+      %li= render "metrics/#{class_name}", collection: group, klass: Metrics::ModelHelper.make_klass(class_name).set(group)
+
+  .col-md-6
+    %h3 Group Metrics
+    %p
+      %em.text-muted updating of group metrics can be done on the group page
+    %p
+      Member of 
+      = raw(@resource.resource_groups.map do |group| link_to group.group_name, resource_group_details_path(group) end.join(', '))
+    %ul  
+      - @group_metrics.each do |class_name, group|
+        %li= render "metrics/#{class_name}", collection: group, klass: Metrics::ModelHelper.make_klass(class_name).set(group)
+
+    = form_tag(add_resource_to_group_path(@resource)) do
+      .form-group
+        %label{for: 'resource_resource_groups'}
+          Add to group:
+        = collection_select(:resource, :resource_groups, @all_groups, :id, :group_name, {}, {:class => 'form-control'})
+      %button.btn.btn-default{type: 'submit'} Add
+
+
+%h3
+  %b
+  %big Recent 5 Messages from Facebook feed
+  
+.filter
+  %ul.nav.nav-pills
+    %li  
+%li= @feed_from_fb.first['message']
+%li= @feed_from_fb.second['message']
+%li= @feed_from_fb.third['message']
+%li= @feed_from_fb.fourth['message']
+%li= @feed_from_fb.fifth['message']
+
+<br>
+
+%h2
+  %medium Facebook Feed for 
+  = @resource.name
+%table
+  %thead
+  %tr
+  %th Message
+  %th Date Created	
+  %th Id
+  %tbody
+    - @feed_from_fb.each do |row|
+      %tr
+        - row.each do |column|
+          %td= column
+ 
+= "Total Items #{@filter_count}"
+.filter
+  %ul.nav.nav-pills
+    %li
+      %span Filter:
+    %li= link_to 'All (but comments)', resource_details_path(@resource.username, 0)
+    %li= link_to 'Posts', resource_details_path(@resource.username, 0, f: "message")
+    %li= link_to 'Stories', resource_details_path(@resource.username, 0, f: "story")
+    %li= link_to 'Comments', resource_details_path(@resource.username, 0, f: "comment")
+
+= render 'resources/feeds_paging', offset: @offset, username: @resource.username, filter: @filter, total_pages: @total_pages
+%ul#fb-timeline.timeline.v2
+  - @feeds.each do |item|
+    %li.event
+
+      .heading
+        %span.sender
+          - if !item.from.nil?
+            = link_to item.from.name, resource_overview_path(item.from.username)
+          - if !item.to.nil?
+            = raw "to #{link_to item.to.name, resource_details_path(item.to.username)}"
+        %span.date= item['created_time'].localtime.to_formatted_s(:long) if item['created_time'].is_a?(Time)
+      .data
+        = item['data']
+      .footer
+        %span.likes= "#{item['like_count'] || 0} likes"
+        %span.comments= "#{item['comment_count'] || 0} comments"
+        %span.type= " (#{item['data_type']}: #{item['feed_type']})"
+        - if item.feed_tags.length > 0
+          %br
+          tags:
+          - item.feed_tags.each do |x| 
+            = link_to x.resource.name, resource_overview_path(x.resource.username)
+            ,
+
+= render 'resources/feeds_paging', offset: @offset, username: @resource.username, filter: @filter, total_pages: @total_pages

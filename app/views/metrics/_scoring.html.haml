@@ -1,0 +1,8 @@
+Group Scoring
+%ul
+  - collection.each do |metric|
+    %li
+      %p{class: "metric-key-#{metric.vars_for_render[:name]}"}
+        for 
+        = raw print_res_list(metric.vars_for_render[:involved_resources])
+        = metric.vars_for_render[:value]

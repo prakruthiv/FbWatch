@@ -1,0 +1,27 @@
+%h1 Duplicate Feed Entries
+
+%table.table.feed-table
+  %tr
+    %th.col-date Date
+    %th.col-data Data
+    %th.col-type Type
+    %th.col-from From
+    %th.col-to To
+    %th.col-comments Comments
+    %th.col-likes Likes
+  - @feeds.each do |item|
+    %tr
+      %td.col-date= item['updated_time'].localtime.to_formatted_s(:long)
+      %td.col-data
+        .res-data= item['data']
+      %td.col-type= item['feed_type']
+      %td.col-from
+        - if !item.from.nil?
+          = link_to item.from.name, resource_overview_path(item.from.username)
+      %td.col-to
+        - if !item.to.nil?
+          = link_to item.to.name, resource_overview_path(item.to.username)
+      %td.col-comments= item['comment_count']
+      %td.col-likes= item['like_count']
+
+= link_to 'Delete duplicates?', do_clean_up_path(@resource.username), method: :patch

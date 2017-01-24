@@ -1,0 +1,24 @@
+%h1 Run a query on the FB Graph API
+%div
+  %p
+    %b Logged in user: 
+    %pre
+      = @user.to_yaml
+  %p
+    %b Access Token: 
+    = @token
+
+- if @query
+  %h2 Query run: 
+  = @query
+  %br
+  %b Result:
+  %pre
+    = @result.to_yaml
+
+%form{action: "", method: "GET", role: 'form'}
+  .form-group
+    %label{for: 'api_query'}
+      Query:
+    %input.form-control{type: "text", name: "query", id: 'api_query'}
+  %button.btn.btn-default{type: 'submit'} Run

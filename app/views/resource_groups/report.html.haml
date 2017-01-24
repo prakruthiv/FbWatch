@@ -1,0 +1,55 @@
+%h1
+  %small Report for
+  = @resource_group.group_name
+
+%p
+  %i= "Resources: #{@resource_group.resources.count}"
+%table.table
+  %tr
+    %th #
+    %th Facebook ID
+    %th Username
+    %th Name
+    %th Facebook Link
+    %th Likes
+    %th Talking About
+    %th Last Synced
+    %th First Activity
+    %th Last Update
+    %th Feed Items
+    %th Status Updates
+    %th Wall Posts
+    %th Comments
+    %th Stories
+    %th Likes on Posts
+    %th Tags
+    %th Resources Posted
+    %th Resources Liked
+    %th Resources Tagged
+    %th Network Node Size
+    %th Google Node Size
+  - counter = 0
+  - @resource_group.resources.each do |res|
+    %tr
+      %td= counter += 1
+      %td= link_to "#{res.facebook_id}", resource_overview_path(res.username)
+      %td= res.username
+      %td= res.name
+      %td= link_to res.link, res.link
+      %td= res.basicdata.where(key: 'likes').first.value                if res.basicdata and res.basicdata.where(key: 'likes').length > 0
+      %td= res.basicdata.where(key: 'talking_about_count').first.value  if res.basicdata and res.basicdata.where(key: 'talking_about_count').length > 0
+      %td= res.last_synced
+      %td= res.metrics.where(name: 'first_feed_activity').first.value   if res.metrics and res.metrics.where(name: 'first_feed_activity').length > 0
+      %td= res.metrics.where(name: 'latest_feed_post').first.value      if res.metrics and res.metrics.where(name: 'latest_feed_post').length > 0
+      %td= res.metrics.where(name: 'total_feed_items').first.value      if res.metrics and res.metrics.where(name: 'total_feed_items').length > 0
+      %td= res.metrics.where(name: 'posts_by_owner').first.value        if res.metrics and res.metrics.where(name: 'posts_by_owner').length > 0
+      %td= res.metrics.where(name: 'posts_by_others').first.value       if res.metrics and res.metrics.where(name: 'posts_by_others').length > 0
+      %td= res.metrics.where(name: 'total_comment').first.value         if res.metrics and res.metrics.where(name: 'total_comment').length > 0
+      %td= res.metrics.where(name: 'story_count').first.value           if res.metrics and res.metrics.where(name: 'story_count').length > 0
+      %td= res.metrics.where(name: 'total_likes').first.value           if res.metrics and res.metrics.where(name: 'total_likes').length > 0
+      %td= res.metrics.where(name: 'total_tags').first.value            if res.metrics and res.metrics.where(name: 'total_tags').length > 0
+      %td= res.metrics.where(name: 'resources_on_feed').first.value     if res.metrics and res.metrics.where(name: 'resources_on_feed').length > 0
+      %td= res.metrics.where(name: 'resource_like_count').first.value   if res.metrics and res.metrics.where(name: 'resource_like_count').length > 0
+      %td= res.metrics.where(name: 'resource_tag_count').first.value    if res.metrics and res.metrics.where(name: 'resource_tag_count').length > 0
+      %td= res.group_metrics.where(resource_group_id: @resource_group.id, name: 'graph_node', metric_class: 'network_graph').first.value if res.group_metrics and res.group_metrics.where(resource_group_id: @resource_group.id, name: 'graph_node', metric_class: 'network_graph').length > 0
+      %td= res.group_metrics.where(resource_group_id: @resource_group.id, name: 'graph_node', metric_class: 'network_graph_google').first.value if res.group_metrics and res.group_metrics.where(resource_group_id: @resource_group.id, name: 'graph_node', metric_class: 'network_graph_google').length > 0

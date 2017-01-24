@@ -1,0 +1,16 @@
+%h1
+  %small Overview for
+  = @resource.name
+  %small= link_to @resource.link, @resource.link
+
+%p
+  = link_to "Update", '#', class: "btn btn-primary #{@resource.currently_syncing? ? 'disabled' : ''}"
+  = link_to "Show details", resource_details_path(@resource.username), class: "btn btn-default"
+
+= render 'tasks', tasks: @resource.tasks
+
+%p
+  - @resource.resource_groups.each do |resource_group|
+    %h2= link_to resource_group.group_name, resource_group_details_path(resource_group)
+    - resource_group.metric_overview_classes(@resource).each do |group_metric|
+      = render "metrics/#{group_metric.class.name.demodulize.underscore}_overview", klass: group_metric

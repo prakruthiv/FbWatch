@@ -1,0 +1,14 @@
+
+%ul.pager
+  - if offset > 0 
+    %li= link_to raw('&laquo;'), resource_details_path(username, offset-1, f: filter)
+  - else
+    %li.disabled
+      %a &laquo;
+  %li
+    %span= "page #{offset+1} of #{total_pages}"
+  - if total_pages > (offset+1)
+    %li= link_to raw('&raquo;'), resource_details_path(username, offset+1, f: filter)
+  - else
+    %li.disabled
+      %a &raquo;

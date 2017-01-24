@@ -1,0 +1,9 @@
+%h1 
+  Data Gathered for 
+  %i= @username
+
+%h2 Basic Data
+%pre= @result[:basic_data].to_yaml
+
+%h2 Feed
+%pre= @result[:feed].to_yaml

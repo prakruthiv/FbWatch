@@ -1,0 +1,11 @@
+%div.network-graph
+  %h2 Network Graph from Google Relations
+  .network-graph-container
+    .network-graph-canvas{'data-graph-url' => resource_group_google_graph_path(klass.resource_group, :json)}
+  %p
+    %input#network-graph-filter-edges-google.network-graph-filter{type: 'checkbox'}
+    %label{for: 'network-graph-filter-edges-google'} Show only important edges
+    %a.btn.btn-default.btn-sm.toggle-layout Start ForceAtlast Layout
+    %a.btn.btn-default.btn-sm.random-layout Random Layout
+    %a.btn.btn-default.btn-sm.circular-layout Circular Layout
+    %a.btn.btn-default.btn-sm.spiral-layout Grid Layout

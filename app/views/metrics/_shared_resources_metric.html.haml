@@ -1,0 +1,14 @@
+Connection via Shared Resources
+%ul
+  - klass.metrics_by_token.each do |group|
+    %li
+      with 
+      = raw print_res_list(group[:involved])
+      %strong= group[:aggregate]
+    - group[:details].each do |metric|
+      %ul
+        %li
+          %p
+            %strong= metric.sort_value
+            = metric.vars_for_render[:friendly_name]
+            - ukey = metric.resources.map {|x| x.id}.join('_')

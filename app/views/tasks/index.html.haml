@@ -1,0 +1,19 @@
+%h1 Information on Tasks
+
+- @tasks.each do |type,tasks| 
+  %h2
+    %a{'data-toggle' => 'collapse', 'data-target' => "\#task-group-#{type}"}= "#{type.capitalize} Tasks"
+  %div.collapse{id: "task-group-#{type}"}
+    %h3 Active Tasks
+    = render layout: 'tasks/tasklist', locals: { tasks: tasks[:active] } do |task|
+      = link_to(mark_task_error_path(task), method: :patch, class: 'btn btn-danger btn-xs', title: 'Mark as erroneous and stop') do 
+        %span.glyphicon.glyphicon-remove
+    
+    %h3 Halted Tasks
+    = render layout: 'tasks/tasklist', locals: {tasks: tasks[:halted]} do |task|
+      = link_to 'Resume', resume_task_path(task), method: :patch, class: 'btn btn-primary btn-sm'
+      = link_to(mark_task_error_path(task), method: :patch, class: 'btn btn-danger btn-xs', title: 'Mark as erroneous and stop') do 
+        %span.glyphicon.glyphicon-remove
+
+    %h3 Finished Tasks
+    = render 'tasks/tasklist', tasks: tasks[:finished]

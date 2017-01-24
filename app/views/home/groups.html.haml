@@ -1,0 +1,16 @@
+%h1 FBWatch Status
+= link_to "View Resources", resources_index_path
+%h2 Create new resource group
+= simple_form_for(@resource_group) do |f|
+  = f.error_notification
+  = f.input :group_name, label: "Name", class: 'form-control'
+  = f.button :submit, 'Add', class: 'btn-default'
+
+%h2 Resource Groups
+Total:
+= @resource_groups.length
+
+- @resource_groups.each do |group|
+  %h3= link_to group.group_name, resource_group_details_path(group)
+  %p
+    %i= "Resources: #{group.resources.count}"

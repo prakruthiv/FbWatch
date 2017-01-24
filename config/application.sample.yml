@@ -1,0 +1,19 @@
+# Add application configuration variables here, as shown below.
+#
+# PUSHER_APP_ID: "2954"
+# PUSHER_KEY: 7381a978f7dd7f9a1117
+# PUSHER_SECRET: abdc3b896a0ffb85d373
+# STRIPE_API_KEY: EdAvEPVEC3LuaTg5Q3z6WbDVqZlcBQ8Z
+# STRIPE_PUBLIC_KEY: pk_BRgD57O8fHja9HxduJUszhef6jCyS
+
+FACEBOOK_KEY: 1804913136463261
+FACEBOOK_SECRET: a2c1ed5957eff3b0c81b5efdea5efa61
+
+MAILER_FROM: "FBWatch <psycholuke@gmail.com>"
+MAILER_ADDRESS: "smtp.gmail.com"
+MAILER_PORT: 587
+MAILER_DOMAIN: "gmail.com"
+MAILER_USER_NAME: "psycholuke@gmail.com"
+MAILER_PASSWORD: ""
+MAILER_AUTHENTICATION: "plain"
+MAILER_ENABLE_STARTTLS_AUTO: true

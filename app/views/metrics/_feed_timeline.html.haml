@@ -1,0 +1,31 @@
+Feed Timeline
+%ul#timeline
+  %li
+    .relative
+      %label first activity
+      %span.date= klass.first_activity.localtime.to_formatted_s(:long) if klass.first_activity.is_a?(Time)
+      .circle
+  %li
+    .relative
+      %label first post
+      %span.date= klass.first_post.localtime.to_formatted_s(:long) if klass.first_post.is_a?(Time)
+      .circle
+  %li
+    .relative
+      %label last post
+      %span.date= klass.last_post.localtime.to_formatted_s(:long) if klass.last_post.is_a?(Time)
+      .circle
+  %li
+    .relative
+      %label last activity
+      %span.date= klass.last_activity.localtime.to_formatted_s(:long) if klass.last_activity.is_a?(Time)
+      .circle
+
+.progress
+  .progress-bar.progress-bar-success{style: "width:#{klass.first_activity_width}%"}
+  .progress-bar{style: "width:#{klass.first_post_width}%"}
+  .progress-bar.progress-bar-info{style: "width:#{klass.last_post_width}%"}
+  .progress-bar.progress-bar-danger{style: "width:1%"}
+  .progress-bar.progress-bar-info{style: "width:#{klass.last_activity_width}%"}
+  .progress-bar.progress-bar-warning{style: "width:#{klass.idle_width}%"}
+    %span idle

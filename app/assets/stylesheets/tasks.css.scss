@@ -1,0 +1,33 @@
+.tasks-table {
+    table-layout:fixed;
+    .col-res, .col-res-group {
+        width: 8%;
+    }
+    .col-data {
+        width: 40%;
+        .task-data {
+            word-wrap: break-word;
+        }
+    }
+    .col-progress {
+        width: 7%;
+        .glyphicon {
+            color: #d2322d;
+        }
+        .progress {
+            margin-bottom: 0;
+        }
+        .progress-bar[aria-valuenow='0.0'] span {
+            color: black;
+        }
+    }
+    .col-duration {
+        width: 7%;
+    }
+    .col-started, .col-updated {
+        width: 10%;
+    }
+    .col-yield {
+        width: 10%;
+    }
+}

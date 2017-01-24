@@ -1,0 +1,9 @@
+Network Graph Google Edges
+%ul
+  - collection.each do |metric|
+    %li
+      %p{class: "metric-key-#{metric.vars_for_render[:name]}"}
+        to 
+        = raw print_res_list(metric.vars_for_render[:involved_resources])
+        = 'self' if metric.resources.empty?
+        = metric.vars_for_render[:value]
